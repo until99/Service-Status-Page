@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="js-sdk/dist/pocketbase.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="script/main.js" defer></script>
+
+  <title>Service Status Page</title>
+</head>
+<body>
+  <header>
+    <h1>Status Service Page</h1>
+  </header>
+  <main>
+    <div class="status">
+      <table id="logTable">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Pagename</th>
+            <th>Datetime</th>
+            <th>Pageup</th>
+            <th>Error Message</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+<!-- 
+    <div>
+      <canvas id="errorChart" width="400" height="200"></canvas>
+    </div> -->
+  </main>
+  <div id="paginationContainer">
+    <button id="prevPage" onclick="getFullRecordList('previus')">Previous</button>
+    <button id="nextPage" onclick="getFullRecordList('next')">Next</button>
+
+    <p id="pageCount"></p>
+  </div>
+</body>
+</html>
