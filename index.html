@@ -1,48 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="js-sdk/dist/pocketbase.umd.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
+  <!-- Database -->
+  <script defer src="js-sdk/dist/pocketbase.umd.js"></script>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="styles/main.css">
+
+  <!-- JS -->
   <script src="script/main.js" defer></script>
+  <script defer src="script/logChart.js"></script>
+
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Tailwind & DaisyUI -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.13/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Phosphor  -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <title>Service Status Page</title>
 </head>
+
 <body>
   <header>
     <h1>Status Service Page</h1>
   </header>
   <main>
-    <div class="status">
-      <table id="logTable">
+
+    <div>
+      <canvas id="logChart" width="400" height="100"></canvas>
+    </div>
+
+    <!-- Filter Container -->
+    <div class="filterContainer flex mb-5">
+
+      <!-- Service -->
+      <details class="dropdown">
+        <summary class="btn m-1">Year</summary>
+        <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+          <li><a>chatgpt</a></li>
+          <li><a>youtube</a></li>
+          <li><a>jira</a></li>
+          <li><a>reddit</a></li>
+        </ul>
+      </details>
+    </div>
+
+    <!-- Month Dropdown -->
+    <details class="dropdown">
+      <summary class="btn m-1">Month</summary>
+      <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+        <li><a>Janeiro</a></li>
+        <li><a>Fevereiro</a></li>
+        <li><a>Março</a></li>
+        <li><a>Abril</a></li>
+        <li><a>Maio</a></li>
+        <li><a>Junho</a></li>
+        <li><a>Julho</a></li>
+        <li><a>Agosto</a></li>
+        <li><a>Setembro</a></li>
+        <li><a>Outubro</a></li>
+        <li><a>Novembro</a></li>
+        <li><a>Dezembro</a></li>
+      </ul>
+    </details>
+
+    <!-- Year -->
+    <details class="dropdown">
+      <summary class="btn m-1">Year</summary>
+      <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+        <li><a>2023</a></li>
+        <li><a>2024</a></li>
+      </ul>
+    </details>
+    </div>
+
+    <!-- Table Log -->
+    <div class="overflow-x-auto">
+      <table class="table table-zebra" id="logTable">
         <thead>
           <tr>
             <th>Id</th>
             <th>Pagename</th>
             <th>Datetime</th>
-            <th>Pageup</th>
+            <th>Page's Up</th>
             <th>Error Message</th>
           </tr>
         </thead>
         <tbody>
 
         </tbody>
+        <tfoot>
+          <tr>
+            <th>Id</th>
+            <th>Pagename</th>
+            <th>Datetime</th>
+            <th>Page's Up</th>
+            <th>Error Message</th>
+          </tr>
+        </tfoot>
       </table>
     </div>
-<!-- 
-    <div>
-      <canvas id="errorChart" width="400" height="200"></canvas>
-    </div> -->
   </main>
-  <div id="paginationContainer">
-    <button id="prevPage" onclick="getFullRecordList('previus')">Previous</button>
-    <button id="nextPage" onclick="getFullRecordList('next')">Next</button>
 
-    <p id="pageCount"></p>
+  <div id="paginationContainer">
+    <button class="btn" onclick="getFullRecordList('previous')">
+      <i class="ph ph-arrow-left"></i>
+      Previus
+    </button>
+    <button class="btn" onclick="getFullRecordList('next')">
+      <i class="ph ph-arrow-right"></i>
+      Next
+    </button>
   </div>
+
 </body>
+
 </html>

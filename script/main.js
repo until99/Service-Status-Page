@@ -14,19 +14,28 @@ function formatDate(datetimeString) {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
 
-let currentPage = 0;
-const perPage = 10;
+let CURRENT_PAGE = 0;
+let RECORDS = [];
+const PER_PAGE = 25;
 
-async function getFullRecordList(step) {
-  if (step === 'next') {
-    currentPage += 1;
-  } else if (step === 'previus') {
-    if (currentPage > 0) {
-      currentPage -= 1; 
-    }
-  }
+function addPagination() {
+  CURRENT_PAGE += 1;
+}
 
-  const url = `https://hell.pockethost.io/api/collections/MONITORING/records?page=${currentPage}&perPage=${perPage}`;
+function subPagination() {
+  CURRENT_PAGE -= 1;
+}
+
+function getAtualPage() {
+  return CURRENT_PAGE;
+}
+
+function getTotalPages() {
+  return RECORDS.totalPages;
+}
+
+async function getPaginatedRecordList() {
+  const url = `https://hell.pockethost.io/api/collections/MONITORING/records?page=${CURRENT_PAGE}&perPage=${PER_PAGE}`;
 
   try {
     const response = await fetch(url, {
@@ -41,41 +50,44 @@ async function getFullRecordList(step) {
     }
 
     const records = await response.json();
-    // console.log(records);
-
-    const logTable = document.getElementById("logTable");
-    const tbody = logTable.querySelector('tbody');
-    tbody.innerHTML = ''; 
-
-    records.items.forEach(record => {
-      const row = document.createElement("tr");
-
-      const idCell = document.createElement("td");
-      idCell.textContent = record.id;
-      row.appendChild(idCell);
-
-      const pagenameCell = document.createElement("td");
-      pagenameCell.textContent = record.DS_PAGENAME;
-      row.appendChild(pagenameCell);
-
-      const datetimeCell = document.createElement("td");
-      datetimeCell.textContent = formatDate(record.DT_DATETIME);
-      row.appendChild(datetimeCell);
-
-      const pageupCell = document.createElement("td");
-      pageupCell.textContent = record.FG_UP ? 'True' : 'False';
-      row.appendChild(pageupCell);
-
-      const errorMessageCell = document.createElement("td");
-      errorMessageCell.textContent = record.DS_ERROR || 'No error';
-      row.appendChild(errorMessageCell);
-
-      tbody.appendChild(row);
-    });
+    RECORDS = records.items; // set the global variable with the 25 records returned from the API
 
   } catch (error) {
     console.error("Error fetching records:", error.message);
   }
 }
 
-getFullRecordList('next');
+function loadDataIntoTable() {
+  const logTable = document.getElementById("logTable");
+  const tbody = logTable.querySelector('tbody');
+  tbody.innerHTML = '';
+
+  RECORDS.forEach(item => {
+    const row = document.createElement("tr");
+
+    const idCell = document.createElement("td");
+    idCell.textContent = item.id;
+    row.appendChild(idCell);
+
+    const pagenameCell = document.createElement("td");
+    pagenameCell.textContent = item.DS_PAGENAME;
+    row.appendChild(pagenameCell);
+
+    const datetimeCell = document.createElement("td");
+    datetimeCell.textContent = formatDate(item.DT_DATETIME);
+    row.appendChild(datetimeCell);
+
+    const pageupCell = document.createElement("td");
+    pageupCell.textContent = item.FG_UP ? 'True' : 'False';
+    row.appendChild(pageupCell);
+
+    const errorMessageCell = document.createElement("td");
+    errorMessageCell.textContent = item.DS_ERROR || 'No error';
+    row.appendChild(errorMessageCell);
+
+    tbody.appendChild(row);
+  })
+}
+
+getPaginatedRecordList()
+loadDataIntoTable(RECORDS);
