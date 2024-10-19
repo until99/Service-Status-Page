@@ -14,8 +14,7 @@ function formatDate(datetimeString) {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
 
-let CURRENT_PAGE = 0;
-let RECORDS = [];
+var CURRENT_PAGE = 0;
 const PER_PAGE = 25;
 
 function addPagination() {
@@ -50,19 +49,19 @@ async function getPaginatedRecordList() {
     }
 
     const records = await response.json();
-    RECORDS = records.items; // set the global variable with the 25 records returned from the API
+    loadDataIntoTable(records)
 
   } catch (error) {
     console.error("Error fetching records:", error.message);
   }
 }
 
-function loadDataIntoTable() {
+function loadDataIntoTable(records) {
   const logTable = document.getElementById("logTable");
   const tbody = logTable.querySelector('tbody');
   tbody.innerHTML = '';
 
-  RECORDS.forEach(item => {
+  records.items.forEach(item => {
     const row = document.createElement("tr");
 
     const idCell = document.createElement("td");
@@ -90,4 +89,3 @@ function loadDataIntoTable() {
 }
 
 getPaginatedRecordList()
-loadDataIntoTable(RECORDS);
