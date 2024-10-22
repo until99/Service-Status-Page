@@ -1,6 +1,8 @@
 # Service-Status-Page
 Sistema para monitoramento de serviços online, exibindo o status atual e histórico de indisponibilidades, com cálculo da disponibilidade por dia, semana, mês
 
+## Alunos: Lucas Mendes Israel, Gustavo Henrique Costa, Gabriel Kasten, Gustavo William Larsen, Luis Felipe Mondini, João Antonio David
+
 ## Jira: https://catolicasc-team-su0hhztv.atlassian.net/jira/software/projects/SSP/list
 ![image](https://github.com/user-attachments/assets/9cdadb4b-4ff4-4d76-91dc-972fc3c0dbe8)
 
