@@ -62,7 +62,7 @@ function loadDataIntoTable(records) {
   const tbody = logTable.querySelector('tbody');
   tbody.innerHTML = '';
   
-  records.forEach(item => {
+  records.items.forEach(item => {
     const row = document.createElement("tr");
 
     const idCell = document.createElement("td");
