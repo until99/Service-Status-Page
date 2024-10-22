@@ -1,8 +1,35 @@
 # Service-Status-Page
 Sistema para monitoramento de serviços online, exibindo o status atual e histórico de indisponibilidades, com cálculo da disponibilidade por dia, semana, mês
+
+## Jira: https://catolicasc-team-su0hhztv.atlassian.net/jira/software/projects/SSP/list
+![image](https://github.com/user-attachments/assets/9cdadb4b-4ff4-4d76-91dc-972fc3c0dbe8)
+
+
 ## UML:
 
 ![status_service_page drawio](https://github.com/user-attachments/assets/09a4313d-a6e7-4b9d-a90e-431222168963)
+
+## Requisitos Funcionais:
+
+1 - Exibição de Status de Serviços: O sistema deve exibir uma lista de serviços, incluindo os seguintes detalhes: ID, nome da página, data/hora de acesso, status da página (Pageup), e uma mensagem de erro, caso aplicável.
+
+2 - Paginação: O sistema deve suportar a paginação dos dados, permitindo que o usuário navegue entre as páginas de registros por meio dos botões "Previous" e "Next".
+
+3 - Filtragem por Status de Serviço: O sistema pode permitir a filtragem dos serviços por data (dia, semana, mês) 
+
+4 - Registro de Erros: Deve exibir claramente uma mensagem de erro correspondente ao serviço que está com problemas, por exemplo, "Database error", "Network issue", etc.
+
+5 - Atualização em Tempo Real: O sistema deve ser projetado para atualizar os dados em tempo real, exibindo novos registros ou mudanças no status de um serviço.
+
+6 - Data e Hora do Registro: O sistema deve registrar a data e hora de cada evento de status, mostrando claramente quando um serviço foi verificado.
+
+## Requisitos Não Funcionais:
+
+1 - Performance: O sistema deve ser capaz de carregar e exibir os registros rapidamente, mesmo com um grande volume de dados. A paginação deve ser rápida e eficiente.
+
+2 - Confiabilidade: O sistema deve garantir que as informações exibidas estejam sempre corretas, especialmente os status de serviço e as mensagens de erro.
+
+3 - Usabilidade: A interface deve ser simples e fácil de entender, com navegação intuitiva entre as páginas de registros e a exibição clara dos status de cada serviço.
 
 ## Casos de Uso:
 
