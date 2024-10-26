@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "compilerOptions": {
     "declaration": true,
@@ -19,3 +20,26 @@
   },
   "include": ["./src", "./tests"]
 }
+=======
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./dist",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "target": "es2021",
+    "module": "esnext",
+    "strict": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+    },
+  },
+  "include": ["./src", "./tests"]
+}
+>>>>>>> b42af259643220bd271331e1a014cc3443e2b760
