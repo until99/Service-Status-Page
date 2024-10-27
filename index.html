@@ -3,124 +3,138 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="Detailsport" content="width=device-width, initial-scale=1.0">
+  <title>API Status Service</title>
 
-  <!-- Database -->
-  <script defer src="js-sdk/dist/pocketbase.umd.js"></script>
+  <!-- Taillwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="styles/main.css">
+  <!-- General CSS -->
+  <link rel="stylesheet" href="/styles/general.css">
 
   <!-- JS -->
-  <script src="script/main.js" defer></script>
-  <script defer src="script/logChart.js"></script>
+  <script defer src="../../scripts/global_vars.js"></script>
+
+  <script defer src="scripts/apis_ondemand_call.js"></script>
+  <script defer src="scripts/user_menu_controll.js"></script>
+  <script defer src="scripts/database_manipulation.js"></script>
 
   <!-- ChartJS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Tailwind & DaisyUI -->
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.13/dist/full.min.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Phosphor  -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-  <title>Service Status Page</title>
 </head>
 
 <body>
-  <header>
-    <h1>Status Service Page</h1>
-  </header>
-  <main>
+  <script>
+    if (localStorage.getItem("cd_user") == null) {
+      window.location = 'http://127.0.0.1:5500/pages/auth/login.html';
+    }
+  </script>
 
+  <nav class="flex justify-between px-12 pt-6 py-12">
     <div>
-      <canvas id="logChart" width="400" height="100"></canvas>
+      <a href="/"><img width="48" height="48" src="/images/logo.png" alt="logo"></a>
     </div>
 
-    <!-- Filter Container -->
-    <div class="filterContainer flex mb-5">
+    <div id="profile-wrapper">
+      <button id="profile-button">
+        <img width="48" height="48" class="rounded-full"
+          src="https://i.pinimg.com/736x/00/70/34/0070346f2432620dad806e41021c07b0.jpg" alt="profile logo">
+      </button>
 
-      <div class="flex">
-        <!-- Service -->
-        <details class="dropdown">
-          <summary class="btn m-1">Services</summary>
-          <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-            <li><a>chatgpt</a></li>
-            <li><a>youtube</a></li>
-            <li><a>jira</a></li>
-            <li><a>reddit</a></li>
-          </ul>
-        </details>
+      <div class="relative" id="profile-options-menu">
+        <div
+          class="absolute end-0 z-10 mt-2 w-72 rounded-md border border-gray-100 shadow-lg border-gray-800 bg-[#181a1b]"
+          role="menu">
+          <div class="p-2">
+            <a href="/" class="block rounded-lg px-4 py-2 text-sm text-gray-400 hover:bg-[#131516] hover:text-white"
+              role="menuitem" id="manage-routes">
+              Página Inicial
+            </a>
+          </div>
+          <div class="p-2">
+            <a href="/pages/routes/manage.html"
+              class="block rounded-lg px-4 py-2 text-sm text-gray-400 hover:bg-[#131516] hover:text-white"
+              role="menuitem" id="manage-routes">
+              Gerenciar Rotas Monitoradas
+            </a>
+          </div>
+          <div class="p-2">
+
+            <button id="logout-menu-button"
+              class="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-200"
+              role="menuitem">
+              Log Out
+            </button>
+
+          </div>
+        </div>
       </div>
 
-      <!-- Month Dropdown -->
-      <details class="dropdown">
-        <summary class="btn m-1">Month</summary>
-        <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-          <li><a>Janeiro</a></li>
-          <li><a>Fevereiro</a></li>
-          <li><a>Março</a></li>
-          <li><a>Abril</a></li>
-          <li><a>Maio</a></li>
-          <li><a>Junho</a></li>
-          <li><a>Julho</a></li>
-          <li><a>Agosto</a></li>
-          <li><a>Setembro</a></li>
-          <li><a>Outubro</a></li>
-          <li><a>Novembro</a></li>
-          <li><a>Dezembro</a></li>
-        </ul>
-      </details>
+    </div>
+  </nav>
 
-      <!-- Year -->
-      <details class="dropdown">
-        <summary class="btn m-1">Year</summary>
-        <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-          <li><a>2023</a></li>
-          <li><a>2024</a></li>
-        </ul>
-      </details>
+  <main class="flex flex-col gap-12">
+    <div>
+      <canvas id="log-chart" width="400" height="100"></canvas>
     </div>
 
-    <!-- Table Log -->
-    <div class="overflow-x-auto">
-      <table class="table table-zebra" id="logTable">
-        <thead>
+    <div class="overflow-x-auto px-12">
+
+      <button onclick="check_apis_status()"
+        class="my-12 inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700">
+        Make Api's Call
+      </button>
+
+      <table class="min-w-full divide-y-2 divide-gray-200 text-sm text-white">
+        <thead class="text-left">
           <tr>
-            <th>Id</th>
-            <th>Pagename</th>
-            <th>Datetime</th>
-            <th>Page's Up</th>
-            <th>Error Message</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium">ID</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium">API NAME</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium">DATETIME</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium">ERROR MESSAGE</th>
+            <th class="px-4 py-2"></th>
           </tr>
         </thead>
-        <tbody>
+
+        <tbody class="divide-y divide-gray-200">
+
+          <tr>
+            <td class="whitespace-nowrap px-4 py-2 font-medium">Gary Barlow</td>
+            <td class="whitespace-nowrap px-4 py-2">24/05/1995</td>
+            <td class="whitespace-nowrap px-4 py-2">Singer</td>
+            <td class="whitespace-nowrap px-4 py-2">$20,000</td>
+            <td class="whitespace-nowrap px-4 py-2">
+              <a href="#"
+                class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700">
+                Details
+              </a>
+            </td>
+          </tr>
 
         </tbody>
-        <tfoot>
-          <tr>
-            <th>Id</th>
-            <th>Pagename</th>
-            <th>Datetime</th>
-            <th>Page's Up</th>
-            <th>Error Message</th>
-          </tr>
-        </tfoot>
       </table>
-    </div>
-  </main>
 
-  <div id="paginationContainer">
-    <button class="btn" onclick="subPagination(); getPaginatedRecordList()">
-      <i class="ph ph-arrow-left"></i>
-      Previus
-    </button>
-    <button class="btn" onclick="addPagination(); getPaginatedRecordList()">
-      <i class="ph ph-arrow-right"></i>
-      Next
-    </button>
-  </div>
+      <div class="border-gray-200 py-8">
+        <ol class="flex justify-start gap-1 text-xs font-medium">
+          <li>
+            <button onclick="navigatePaginatedTable('previus', 1); console.log('previus page');"
+              class="block w-fit h-8 px-2 rounded border border-indigo-600 bg-indigo-600 text-center leading-8 text-white hover:bg-indigo-700 hover:border-indigo-700 hover:text-white">
+              Anterior
+            </button>
+          </li>
+
+          <li>
+            <button onclick="navigatePaginatedTable('next', 1); console.log('next page');"
+              class="block w-fit h-8 px-2 rounded border border-indigo-600 bg-indigo-600 text-center leading-8 text-white hover:bg-indigo-700 hover:border-indigo-700 hover:text-white">
+              Proximo
+            </button>
+          </li>
+        </ol>
+      </div>
+
+    </div>
+
+  </main>
 
 </body>
 

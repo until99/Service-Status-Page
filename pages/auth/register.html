@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="Detailsport" content="width=device-width, initial-scale=1.0">
+  <title>API Status Service</title>
+
+  <!-- Taillwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- JS -->
+  <script defer src="../../scripts/global_vars.js"></script>
+
+  <script defer src="scripts/register.js"></script>
+  <script defer src="../../scripts/database_manipulation.js"></script>
+
+  <!-- General CSS -->
+  <link rel="stylesheet" href="/styles/general.css">
+
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <nav class="flex justify-between px-12 pt-6 py-12 index-1">
+
+    <div>
+      <a href=""><img width="48" height="48" src="/images/logo.png" alt="logo"></a>
+    </div>
+
+  </nav>
+
+  <main>
+    <section class="relative flex flex-wrap justify-center items-center">
+
+      <div class="px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
+        <div class="mx-auto max-w-lg text-center">
+          <h1 class="text-2xl font-bold sm:text-3xl text-white">Registre-se na plataforma</h1>
+        </div>
+
+        <form id="user-register-form" class="mx-auto mb-0 mt-8 max-w-md space-y-4 flex flex-col gap-4 items-center">
+
+          <input type="text" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" placeholder="Usuário"
+            id="user-register-input" required />
+
+          <input type="text" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" placeholder="Senha"
+            id="password-register-input" required />
+
+          <input type="submit"
+            class="w-fit inline-block rounded bg-indigo-600 px-4 py-4 text-xs font-medium text-white hover:bg-indigo-700"
+            value="Registrar-se" />
+
+        </form>
+      </div>
+
+    </section>
+  </main>
+</body>
+
+</html>
