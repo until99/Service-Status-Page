@@ -1,7 +1,3 @@
-Aqui está uma versão mais organizada do seu documento sobre o sistema de monitoramento de serviços online:
-
----
-
 # Service Status Page
 
 ## Descrição do Sistema
