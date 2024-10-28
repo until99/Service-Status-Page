@@ -17,6 +17,7 @@ async function check_if_user_is_in_database(username, password) {
     if (data.items.length > 0) {
 
       localStorage.setItem("cd_user", data.items[0].id);
+      localStorage.setItem("ds_cover_image", data.items[0].ds_cover_image);
 
       window.location = 'http://127.0.0.1:5500';
 
@@ -30,11 +31,12 @@ async function check_if_user_is_in_database(username, password) {
 
 }
 
-async function register_user_in_database(username, password) {
+async function register_user_in_database(username, password, cover_image) {
 
   data = {
     'ds_username': username,
-    'ds_password': password
+    'ds_password': password,
+    'ds_cover_image': cover_image
   }
 
   try {
@@ -80,8 +82,6 @@ async function assign_new_url_to_user(user, url) {
       if (!response.ok) {
         throw new Error('Erro na requisição: ' + response.statusText);
       }
-      
-      console.log(response.json());
 
       if (response.ok) {
         window.location = 'http://127.0.0.1:5500/';
@@ -93,4 +93,39 @@ async function assign_new_url_to_user(user, url) {
     .catch(error => {
       console.error("Erro:", error);
     });
+}
+
+async function create_api_log_report(data) {
+
+  console.log('create_api_log_report');
+
+  data = {
+    'cd_user': localStorage.getItem("cd_user"),
+    'cd_url': data.cd_url,
+    'cd_status': data.cd_status,
+    'ds_status': data.ds_status,
+    'js_headers': data.js_headers,
+  }
+
+  fetch(`https://hell.pockethost.io/api/collections/url_responses/records`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erro na requisição: ' + response.statusText);
+      }
+    })
+    .then(
+      setTimeout(() => {
+        window.location = 'http://127.0.0.1:5500/'
+      }, 1000)
+    )
+    .catch (error => {
+    console.error("Erro:", error);
+  });
+
 }

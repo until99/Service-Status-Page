@@ -6,6 +6,8 @@
   <meta name="Detailsport" content="width=device-width, initial-scale=1.0">
   <title>API Status Service</title>
 
+  <link rel="shortcut icon" href="#" type="image/x-icon">
+
   <!-- Taillwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -15,12 +17,17 @@
   <!-- JS -->
   <script defer src="../../scripts/global_vars.js"></script>
 
-  <script defer src="scripts/apis_ondemand_call.js"></script>
   <script defer src="scripts/user_menu_controll.js"></script>
   <script defer src="scripts/database_manipulation.js"></script>
+  <script defer src="scripts/apis_ondemand_call.js"></script>
+  <script defer src="scripts/html_table_manipulation.js"></script>
 
   <!-- ChartJS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="scripts/chart.js"></script>
+
+  <script defer src="scripts/chart.js"></script>
+
 </head>
 
 <body>
@@ -37,8 +44,9 @@
 
     <div id="profile-wrapper">
       <button id="profile-button">
-        <img width="48" height="48" class="rounded-full"
-          src="https://i.pinimg.com/736x/00/70/34/0070346f2432620dad806e41021c07b0.jpg" alt="profile logo">
+        <img width="48" height="48" class="rounded-full" id="profile-icon"
+          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Funi-el.dk%2Fwp-content%2Fuploads%2F2015%2F11%2Fdummy-profile-picmale1.png&f=1&nofb=1&ipt=efbe35dd369102266bcc9c51a8a70bb5cc09ccb9e14055fde8e89e62726db4b6&ipo=images"
+          alt="profile logo">
       </button>
 
       <div class="relative" id="profile-options-menu">
@@ -80,7 +88,7 @@
 
     <div class="overflow-x-auto px-12">
 
-      <button onclick="check_apis_status()"
+      <button id="ondemand-call-apis-button"
         class="my-12 inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700">
         Make Api's Call
       </button>
@@ -88,45 +96,40 @@
       <table class="min-w-full divide-y-2 divide-gray-200 text-sm text-white">
         <thead class="text-left">
           <tr>
-            <th class="whitespace-nowrap px-4 py-2 font-medium">ID</th>
-            <th class="whitespace-nowrap px-4 py-2 font-medium">API NAME</th>
-            <th class="whitespace-nowrap px-4 py-2 font-medium">DATETIME</th>
-            <th class="whitespace-nowrap px-4 py-2 font-medium">ERROR MESSAGE</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium">Id</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium">Url</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium">Datetime</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium">Headers</th>
             <th class="px-4 py-2"></th>
           </tr>
         </thead>
 
-        <tbody class="divide-y divide-gray-200">
-
-          <tr>
-            <td class="whitespace-nowrap px-4 py-2 font-medium">Gary Barlow</td>
-            <td class="whitespace-nowrap px-4 py-2">24/05/1995</td>
-            <td class="whitespace-nowrap px-4 py-2">Singer</td>
-            <td class="whitespace-nowrap px-4 py-2">$20,000</td>
-            <td class="whitespace-nowrap px-4 py-2">
-              <a href="#"
-                class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700">
-                Details
-              </a>
-            </td>
-          </tr>
-
+        <tbody class="divide-y divide-gray-200" id="log-table">
         </tbody>
       </table>
 
       <div class="border-gray-200 py-8">
-        <ol class="flex justify-start gap-1 text-xs font-medium">
+        <ol class="flex items-center justify-start gap-1 text-xs font-medium">
           <li>
-            <button onclick="navigatePaginatedTable('previus', 1); console.log('previus page');"
+            <button id="previous-page-button"
               class="block w-fit h-8 px-2 rounded border border-indigo-600 bg-indigo-600 text-center leading-8 text-white hover:bg-indigo-700 hover:border-indigo-700 hover:text-white">
               Anterior
             </button>
           </li>
 
           <li>
-            <button onclick="navigatePaginatedTable('next', 1); console.log('next page');"
+            <button id="next-page-button"
               class="block w-fit h-8 px-2 rounded border border-indigo-600 bg-indigo-600 text-center leading-8 text-white hover:bg-indigo-700 hover:border-indigo-700 hover:text-white">
               Proximo
+            </button>
+          </li>
+
+          <p class="text-white pl-4 pr-2">Página Atual:</p>
+
+          <li>
+            <button id="actual-page" disabled
+              class="block h-8 w-8 px-2 rounded border border-indigo-900 bg-indigo-900 text-center leading-8 text-white">
+              1
             </button>
           </li>
         </ol>

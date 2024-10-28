@@ -30,37 +30,47 @@
   </script>
 
 
-  <nav class="flex justify-between px-12 pt-6 py-12 index-1">
-
+  <nav class="flex justify-between px-12 pt-6 py-12">
     <div>
       <a href="/"><img width="48" height="48" src="/images/logo.png" alt="logo"></a>
     </div>
 
     <div id="profile-wrapper">
-
-      <button id="profile-button" onclick="swith_profile_menu()">
-        <img width="48" height="48" class="rounded-full"
-          src="https://i.pinimg.com/736x/00/70/34/0070346f2432620dad806e41021c07b0.jpg" alt="profile logo">
+      <button id="profile-button">
+        <img width="48" height="48" class="rounded-full" id="profile-icon"
+          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Funi-el.dk%2Fwp-content%2Fuploads%2F2015%2F11%2Fdummy-profile-picmale1.png&f=1&nofb=1&ipt=efbe35dd369102266bcc9c51a8a70bb5cc09ccb9e14055fde8e89e62726db4b6&ipo=images" alt="profile logo">
       </button>
 
       <div class="relative" id="profile-options-menu">
         <div
-          class="absolute end-0 z-10 mt-2 w-72 rounded-md border border-gray-100 shadow-lg border-gray-800 bg-[#181a1b] gap-1"
+          class="absolute end-0 z-10 mt-2 w-72 rounded-md border border-gray-100 shadow-lg border-gray-800 bg-[#181a1b]"
           role="menu">
-          <a href="/" class="block rounded-lg p-4 mt-2 mx-2 text-sm text-gray-400 hover:bg-[#131516] hover:text-white"
-            role="menuitem" id="manage-routes">
-            Página Inicial
-          </a>
-          <a href="/pages/routes/manage.html"
-            class="block rounded-lg p-4 mb-2 mx-2 text-sm text-gray-400 hover:bg-[#131516] hover:text-white"
-            role="menuitem" id="manage-routes">
-            Gerenciar Rotas Monitoradas
-          </a>
+          <div class="p-2">
+            <a href="/" class="block rounded-lg px-4 py-2 text-sm text-gray-400 hover:bg-[#131516] hover:text-white"
+              role="menuitem" id="manage-routes">
+              Página Inicial
+            </a>
+          </div>
+          <div class="p-2">
+            <a href="/pages/routes/manage.html"
+              class="block rounded-lg px-4 py-2 text-sm text-gray-400 hover:bg-[#131516] hover:text-white"
+              role="menuitem" id="manage-routes">
+              Gerenciar Rotas Monitoradas
+            </a>
+          </div>
+          <div class="p-2">
+
+            <button id="logout-menu-button"
+              class="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-200"
+              role="menuitem">
+              Log Out
+            </button>
+
+          </div>
         </div>
       </div>
 
     </div>
-
   </nav>
 
   <main>
