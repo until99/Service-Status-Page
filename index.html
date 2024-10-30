@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Service Page
+  </title>
+
+  <link rel="shortcut icon" href="src/assets/favicon/favicon.ico" type="image/x-icon">
+
+  <!-- Taillwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- General CSS -->
+  <link rel="stylesheet" href="/src/styles/index.css">
+
+  <!-- Chartjs Log Chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script defer src="/src/scripts/chartjs.js"></script>
+
+  <!-- Profile -->
+  <script defer src="/src/scripts/profile-button.js"></script>
+
+  <!-- General JS -->
+  <script defer src="/src/scripts/general.js"></script>
+
+  <!-- Fetch API's -->
+  <script defer src="/src/scripts/monitoring_urls/fetch.js"></script>
+</head>
+
+<body>
+
+  <script>
+    if (localStorage.getItem('token') == 'null') {
+      window.location = localStorage.getItem('base_route') + '/src/pages/auth/login.html';
+    }
+  </script>
+
+  <header class="flex justify-between items-center px-12 pt-12 w-full">
+    <div class="flex items-center gap-4">
+      <a id="home" rel="noopener noreferrer"><img width="60" height="60" src="/src/assets/logo.png" alt="Logo"></a>
+      <h1 class="text-3xl font-bold text-gray-200 ">Status Service</h1>
+    </div>
+
+    <div class="flex flex-col gap-4 items-end">
+      <div>
+        <button id="profile-button">
+          <img src="https://i.pinimg.com/736x/8f/af/7a/8faf7aff61d863f090560c3f0dd3d9f6.jpg"
+            class="rounded-full w-16 h-16 object-cover" alt="Profile Image">
+        </button>
+      </div>
+
+      <div class="relative z-10 inline-block text-left w-72" role="menu" id="profile-options-menu">
+        <div class="absolute end-0 z-10rounded-md border border-gray-100 shadow-lg border-gray-800 bg-[#181a1b]"
+          id="profile-menu">
+          <div class="p-2">
+            <a class="block rounded-lg px-4 py-2 text-sm text-gray-400 hover:bg-[#131516] hover:text-white"
+              role="menuitem" id="home-menu-item">
+              Página Inicial
+            </a>
+          </div>
+          <div class="p-2">
+            <a class="block rounded-lg px-4 py-2 text-sm text-gray-400 hover:bg-[#131516] hover:text-white"
+              role="menuitem" id="routes-menu-item">
+              Gerenciar Rotas Monitoradas
+            </a>
+          </div>
+          <div class="p-2">
+
+            <button id="logout-menu-button"
+              class="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-200"
+              role="menuitem" id="logout-menu-item">
+              Log Out
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  <main class="flex flex-col px-12">
+
+    <section>
+
+      <div class="flex gap-6 py-12">
+        <button class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded" id="make-request">
+          Make Request
+        </button>
+      </div>
+
+    </section>
+
+    <div class="flex gap-6">
+      <section class="w-1/2 bg-gray-800 rounded flex justify-center items-center h-[32rem]">
+        <canvas class="rounded p-6" id="log-chart"></canvas>
+      </section>
+      <section class="w-1/2">
+        <div class="overflow-x-auto overflow-y-auto h-[32rem]">
+          <table class="min-w-full divide-y-2 divide-white text-sm" id="table">
+            <thead class="text-center">
+              <tr>
+                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                  ID
+                </th>
+                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                  Url
+                </th>
+                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                  Status
+                </th>
+                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                  Descrição
+                </th>
+                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                  Realizada
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-gray-300" id="table-body">
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+</body>
+
+</html>
