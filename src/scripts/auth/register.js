@@ -13,12 +13,12 @@ document.getElementById('register-form').addEventListener('submit', (e) => {
 
 async function login(email, password) {
   const register_data = {
-    'ds_email': email,
-    'ds_password': password
+    'email': email,
+    'password': password
   }
 
   try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `user/records?filter=ds_email="${email}"&&ds_password="${password}"`, {
+    const response = await fetch(localStorage.getItem('database_base_url') + `users/records?filter=email="${email}"&&password="${password}"`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

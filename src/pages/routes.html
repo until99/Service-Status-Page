@@ -87,7 +87,8 @@
         <table class="w-2/3 divide-y-2 divide-white text-sm h-fit" id="table">
           <thead class="text-left">
             <tr>
-              <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">ID</th>
+              <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">Id</th>
+              <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">Group</th>
               <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
                 Url
               </th>
@@ -97,7 +98,7 @@
           </thead>
           <tbody class="divide-y divide-gray-300" id="table-body">
 
-            
+
 
           </tbody>
         </table>
@@ -110,12 +111,25 @@
 
           <form class="mx-auto mb-0 mt-8 max-w-md space-y-4" id="add-route-form">
             <div>
+              <label for="url" class="sr-only">Url Group</label>
+
+              <div class="relative">
+                <input type="text" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" id="group"
+                  placeholder="Enter url group" />
+
+              </div>
+
+            </div>
+
+            <div>
               <label for="url" class="sr-only">Url</label>
 
               <div class="relative">
                 <input type="url" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" id="url"
                   placeholder="Enter url" />
+
               </div>
+
             </div>
 
             <div class="flex items-center justify-center">

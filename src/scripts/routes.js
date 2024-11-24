@@ -1,21 +1,23 @@
 document.getElementById('add-route-form').addEventListener('submit', (e) => {
   e.preventDefault();
 
+  const url_nickname = document.getElementById('group').value;
   const url = document.getElementById('url').value;
 
-  create_route(url);
+  create_route(url_nickname, url);
 
   document.getElementById('add-route-form').reset();
 })
 
-async function create_route(url) {
+async function create_route(name, url) {
   let data = {
-    'cd_user': localStorage.getItem('token'),
-    'ds_url': url.trim()
+    'name': name.trim(),
+    'user_id': localStorage.getItem('token'),
+    'url': url.trim()
   }
 
   try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `user_url/records`, {
+    const response = await fetch(localStorage.getItem('database_base_url') + `apis/records`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +36,7 @@ async function create_route(url) {
 
 async function get_routes() {
   try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `user_url/records?filter=cd_user="${localStorage.getItem('token')}"`, {
+    const response = await fetch(localStorage.getItem('database_base_url') + `apis/records?filter=user_id="${localStorage.getItem('token')}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -63,12 +65,6 @@ function escapeHtml(unsafe) {
 
 function populate_routes_table(routes) {
 
-  // <button class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded w-fit"
-  //   id="edit-${escapeHtml(route.id)}"
-  //   onclick="edit_route('${escapeHtml(route.id)}', 'url-${escapeHtml(route.id)}')">
-  //   Editar
-  // </button>
-
   document.getElementById('table-body').innerHTML = '';
 
   routes.items.forEach(route => {
@@ -78,7 +74,10 @@ function populate_routes_table(routes) {
           ${escapeHtml(route.id)}
         </td>
         <td class="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200">
-          <input class="text-sm bg-transparent text-white focus:outline-none" type="url" id="url-${escapeHtml(route.id)}" value="${escapeHtml(route.ds_url)}" />
+          <input class="text-sm bg-transparent text-white focus:outline-none" type="text" id="nickname-${escapeHtml(route.name)}" value="${escapeHtml(route.name)}" />
+        </td>
+        <td class="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200">
+          <input class="text-sm bg-transparent text-white focus:outline-none" type="url" id="url-${escapeHtml(route.id)}" value="${escapeHtml(route.url)}" />
         </td>
         <td class="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200">
           ${escapeHtml(route.created)}
@@ -97,7 +96,7 @@ function populate_routes_table(routes) {
 
 async function delete_route(id) {
   try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `user_url/records/${id}`, {
+    const response = await fetch(localStorage.getItem('database_base_url') + `apis/records/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -114,35 +113,6 @@ async function delete_route(id) {
     console.error(error)
   }
 }
-
-// async function edit_route(id, input_id_url) {
-//   let data = {
-//     'cd_user': localStorage.getItem('token'),
-//     'ds_url': document.getElementById(input_id_url).value
-//   };
-
-//   try {
-//     const response = await fetch(url, {
-//       method: 'PUT',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(data),
-//     });
-
-//     if (!response.ok) {
-//       const errorMessage = await response.text();
-//       console.error(`Error: ${response.status} - ${errorMessage}`);
-//       return;
-//     }
-
-//     const result = await response.json();
-//     console.log('Requisição bem-sucedida', result);
-
-//   } catch (error) {
-//     console.error('Erro na requisição:', error);
-//   }
-// }
 
 document.addEventListener('DOMContentLoaded', () => {
   get_routes();

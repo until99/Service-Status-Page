@@ -16,10 +16,9 @@ async function populate_log_table() {
   })
 }
 
-
 async function fetch_user_urls() {
   try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `user_url/records?filter=cd_user="${localStorage.getItem('token')}"`, {
+    const response = await fetch(localStorage.getItem('database_base_url') + `apis/records?filter=user_id="${localStorage.getItem('token')}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +28,7 @@ async function fetch_user_urls() {
     const data = await response.json();
 
     if (data.items.length > 0) {
-      return data.items.map(item => item.ds_url);
+      return data.items.map(item => item.url);
     } else {
       return [];
     }
@@ -65,19 +64,18 @@ async function fetch_url_list(urls) {
         });
 
         api_responses.push({
-          'cd_user': localStorage.getItem('token'),
-          'cd_url': url,
-          'cd_status': response.status,
-          'ds_status': STATUS_DESCRIPTIONS[response.status] || "Unknown Status",
-          'js_headers': headers
+          'user_id': localStorage.getItem('token'),
+          'url': url,
+          'status': response.status,
+          'checked_at': new Date().toISOString(),
+          'status_description': STATUS_DESCRIPTIONS[response.status] || "Unknown Status",
         });
       } catch (error) {
         api_responses.push({
-          'cd_user': localStorage.getItem('token'),
-          'cd_url': url,
-          'cd_status': 'Error',
-          'ds_status': error.message,
-          'js_headers': []
+          'user_id': localStorage.getItem('token'),
+          'url': url,
+          'status': 'Error',
+          'status_description': error.message,
         });
       }
     })
@@ -88,7 +86,7 @@ async function fetch_url_list(urls) {
 
 async function fetch_log_records() {
   try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `url_responses/records?filter=cd_user="${localStorage.getItem('token')}"`, {
+    const response = await fetch(localStorage.getItem('database_base_url') + `apis_history/records?filter=user_id="${localStorage.getItem('token')}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -112,7 +110,7 @@ async function fetch_log_records() {
 async function generate_log_records(api_responses) {
   api_responses.forEach((api_response) => {
     try {
-      const response = fetch(localStorage.getItem('database_base_url') + 'url_responses/records', {
+      const response = fetch(localStorage.getItem('database_base_url') + 'apis_history/records', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +119,7 @@ async function generate_log_records(api_responses) {
       });
 
     } catch (error) {
-      console.error('Error sending log records:', error);
+      console.error('Error sending log record:', error);
     }
   });
 

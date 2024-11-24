@@ -1,9 +1,10 @@
-// localStorage.setItem('base_route', 'http://127.0.0.1:5500');
-localStorage.setItem('base_route', 'http://until99.github.io/service-status-page');
-
+localStorage.setItem('base_route', 'http://127.0.0.1:5500');
+// localStorage.setItem('base_route', 'http://until99.github.io/service-status-page');
 localStorage.setItem('database_base_url', 'https://hell.pockethost.io/api/collections/');
 
-document.addEventListener('DOMContentLoaded', profile_switch());
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('profile-options-menu').classList.toggle('hidden')
+});
 
 document.getElementById('home').addEventListener('click', () => {
   window.location.href = localStorage.getItem('base_route');

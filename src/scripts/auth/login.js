@@ -12,7 +12,7 @@ document.getElementById('login-form').addEventListener('submit', (e) => {
 })
 
 function login(email, password) {
-  fetch(localStorage.getItem('database_base_url') + `user/records?filter=ds_email="${email}"&&ds_password="${password}"`, {
+  fetch(localStorage.getItem('database_base_url') + `users/records?filter=email="${email}"&&password="${password}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
