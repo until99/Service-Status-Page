@@ -57,7 +57,8 @@ async function fetch_url_list(urls) {
       let headers = [];
 
       try {
-        const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
+        // const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
+        const response = await fetch(`${encodeURIComponent(url)}`);
 
         response.headers.forEach((value, name) => {
           headers.push({ name: name, value: value });
