@@ -85,7 +85,7 @@ function populate_routes_table(routes) {
         <td class="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200">
           <button class="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded w-fit"
             id="delete-${escapeHtml(route.id)}"
-            onclick="delete_route('${escapeHtml(route.id)}')">
+            onclick="delete_route('${escapeHtml(route.id)}', '${route.url}')">
             Deletar
           </button>
         </td>
@@ -94,21 +94,52 @@ function populate_routes_table(routes) {
   });
 }
 
-async function delete_route(id) {
+async function delete_route(id, url) {
+  // try {
+  // const response = await fetch(localStorage.getItem('database_base_url') + `apis/records/${id}`, {
+  //   method: 'DELETE',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // })
+
+  // if (response.ok) {
   try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `apis/records/${id}`, {
-      method: 'DELETE',
+    const id_list = await fetch(localStorage.getItem('database_base_url') + `apis/records?url=${url}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     })
 
-    if (await response != undefined) {
-      window.location.href = localStorage.getItem('base_route') + '/src/pages/routes.html'
+    if (id_list.ok) {
+      const ids = await id_list.json();
+
+      console.log(ids);
+
+      // ids.items.forEach(route => {
+      //   fetch(localStorage.getItem('database_base_url') + `apis/records/${route.id}`, {
+      //     method: 'DELETE',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   })
+      // });
+
+      // window.location.href = localStorage.getItem('base_route') + '/src/pages/routes.html'
     }
 
-  }
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
 
+    // }
+
+    // catch (error) {
+    //   console.error(error)
+    // }
+  }
   catch (error) {
     console.error(error)
   }

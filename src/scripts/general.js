@@ -1,9 +1,41 @@
+async function fetch_log_records() {
+  console.log('Fetching log records...');
+
+  try {
+    const response = await fetch(localStorage.getItem('database_base_url') + `apis_history/records?filter=user_id="${localStorage.getItem('token')}"&sort=-created`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.items.length > 0) {
+      return data.items;
+    } else {
+      return [];
+    }
+
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return [];
+  }
+}
+
+var LOG_RECORDS = [];
+
+async function populate_log_records() {
+  LOG_RECORDS = await fetch_log_records();
+}
+
 localStorage.setItem('base_route', 'http://127.0.0.1:5500');
 // localStorage.setItem('base_route', 'http://until99.github.io/service-status-page');
 localStorage.setItem('database_base_url', 'https://hell.pockethost.io/api/collections/');
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('profile-options-menu').classList.toggle('hidden')
+  document.getElementById('profile-options-menu').classList.toggle('hidden');
+  populate_log_records();
 });
 
 document.getElementById('home').addEventListener('click', () => {

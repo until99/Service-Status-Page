@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="test">Test</button>
+
+    <script>
+        document.getElementById('test').addEventListener('click', () => {
+            api_response = {
+                'user_id': localStorage.getItem('token'),
+                'url': 'https://google.com',
+                'status': '200',
+                'checked_at': new Date().toISOString(),
+                'status_description': 'OK',
+            }
+
+            try {
+                const response = fetch(localStorage.getItem('database_base_url') + 'apis_history/records', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(api_response),
+                });
+
+            } catch (error) {
+                console.error('Error sending log record:', error);
+            }
+        })
+    </script>
+</body>
+
+</html>

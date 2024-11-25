@@ -1,15 +1,17 @@
-async function populate_log_table() {
+async function populate_log_table(logs) {
 
-  const log_records = await fetch_log_records();
-  log_records.sort((a, b) => new Date(b.created) - new Date(a.created));
+  logs.forEach(log => {
+    log.created = new Date(log.created).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    log.checked_at = new Date(log.checked_at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  })
 
-  log_records.forEach(log => {
+  logs.forEach(log => {
     document.getElementById('table-body').innerHTML += `
     <tr>
       <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.id}</td>
-      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.cd_url}</td>
-      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.cd_status}</td>
-      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.ds_status}</td>
+      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.url}</td>
+      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.status}</td>
+      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.checked_at}</td>
       <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.created}</td>
     </tr>
     `
@@ -43,10 +45,21 @@ async function make_request() {
   const urls = await fetch_user_urls();
   const api_responses = await fetch_url_list(urls);
   generate_log_records(api_responses);
+
+  document.getElementById('make-request').disabled = false;
+
 }
 
 document.getElementById('make-request').addEventListener('click', async () => {
-  make_request();
+  await make_request();
+
+  console.log('Sim');
+
+  document.getElementById('make-request').disabled = true;
+
+  console.log('Não');
+
+  // window.location.reload();
 });
 
 async function fetch_url_list(urls) {
@@ -57,8 +70,7 @@ async function fetch_url_list(urls) {
       let headers = [];
 
       try {
-        // const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
-        const response = await fetch(`${encodeURIComponent(url)}`);
+        const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
 
         response.headers.forEach((value, name) => {
           headers.push({ name: name, value: value });
@@ -76,6 +88,7 @@ async function fetch_url_list(urls) {
           'user_id': localStorage.getItem('token'),
           'url': url,
           'status': 'Error',
+          'checked_at': new Date().toISOString(),
           'status_description': error.message,
         });
       }
@@ -85,30 +98,8 @@ async function fetch_url_list(urls) {
   return api_responses;
 }
 
-async function fetch_log_records() {
-  try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `apis_history/records?filter=user_id="${localStorage.getItem('token')}"`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const data = await response.json();
-
-    if (data.items.length > 0) {
-      return data.items;
-    } else {
-      return [];
-    }
-
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    return [];
-  }
-}
-
 async function generate_log_records(api_responses) {
+
   api_responses.forEach((api_response) => {
     try {
       const response = fetch(localStorage.getItem('database_base_url') + 'apis_history/records', {
@@ -118,13 +109,13 @@ async function generate_log_records(api_responses) {
         },
         body: JSON.stringify(api_response),
       });
-
     } catch (error) {
       console.error('Error sending log record:', error);
     }
   });
 
-  populate_log_table();
+  populate_log_table(LOG_RECORDS);
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {

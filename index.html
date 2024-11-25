@@ -27,6 +27,10 @@
 
   <!-- Fetch API's -->
   <script defer src="src/scripts/monitoring_urls/fetch.js"></script>
+
+  <!-- Filter Contoller -->
+  <script defer src="src/scripts/monitoring_urls/filters.js"></script>
+
 </head>
 
 <body>
@@ -89,6 +93,10 @@
         <button class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded" id="make-request">
           Make Request
         </button>
+
+        <select name="routes" class="bg-gray-800 text-white font-bold py-2 px-4 rounded" id="routes_filter">
+          <option value="all">All</option>
+        </select>
       </div>
 
     </section>
