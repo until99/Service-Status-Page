@@ -23,16 +23,10 @@ function filter_records_by_route(route) {
     }
 
     filtered_records = LOG_RECORDS.filter((record) => record.url === route);
-    console.log("Filtered Records:", filtered_records);
-
     document.getElementById('table-body').innerHTML = '';
-
     populate_log_table(filtered_records);
 }
 
 routes_filter_select.addEventListener('change', (e) => {
     filter_records_by_route(e.target.value);
-
-    console.log("Filter:", e.target.value);
-    console.log("Global Records:", LOG_RECORDS);
 });

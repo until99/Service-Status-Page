@@ -68,6 +68,10 @@ function populate_routes_table(routes) {
   document.getElementById('table-body').innerHTML = '';
 
   routes.items.forEach(route => {
+    route.created = new Date(route.created).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  });
+
+  routes.items.forEach(route => {
     document.getElementById('table-body').innerHTML += `
       <tr>
         <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
@@ -94,51 +98,18 @@ function populate_routes_table(routes) {
   });
 }
 
-async function delete_route(id, url) {
-  // try {
-  // const response = await fetch(localStorage.getItem('database_base_url') + `apis/records/${id}`, {
-  //   method: 'DELETE',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // })
-
-  // if (response.ok) {
+async function delete_route(id) {
   try {
-    const id_list = await fetch(localStorage.getItem('database_base_url') + `apis/records?url=${url}`, {
-      method: 'GET',
+    const response = await fetch(localStorage.getItem('database_base_url') + `apis/records/${id}`, {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
     })
 
-    if (id_list.ok) {
-      const ids = await id_list.json();
-
-      console.log(ids);
-
-      // ids.items.forEach(route => {
-      //   fetch(localStorage.getItem('database_base_url') + `apis/records/${route.id}`, {
-      //     method: 'DELETE',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   })
-      // });
-
-      // window.location.href = localStorage.getItem('base_route') + '/src/pages/routes.html'
+    if (response.ok) {
+      window.location.reload();
     }
-
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-
-    // }
-
-    // catch (error) {
-    //   console.error(error)
-    // }
   }
   catch (error) {
     console.error(error)

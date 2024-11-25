@@ -1,17 +1,12 @@
 async function populate_log_table(logs) {
 
   logs.forEach(log => {
-    log.created = new Date(log.created).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    log.checked_at = new Date(log.checked_at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  })
-
-  logs.forEach(log => {
     document.getElementById('table-body').innerHTML += `
     <tr>
       <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.id}</td>
       <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.url}</td>
       <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.status}</td>
-      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.checked_at}</td>
+      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${STATUS_DESCRIPTIONS[log.status] || 'Unknown Status'}</td>
       <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">${log.created}</td>
     </tr>
     `
@@ -20,7 +15,7 @@ async function populate_log_table(logs) {
 
 async function fetch_user_urls() {
   try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `apis/records?filter=user_id="${localStorage.getItem('token')}"`, {
+    const response = await fetch(localStorage.getItem('database_base_url') + `apis/records?filter=user_id="${localStorage.getItem('token')}"&perPage=500`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -45,21 +40,15 @@ async function make_request() {
   const urls = await fetch_user_urls();
   const api_responses = await fetch_url_list(urls);
   generate_log_records(api_responses);
-
-  document.getElementById('make-request').disabled = false;
-
 }
 
 document.getElementById('make-request').addEventListener('click', async () => {
   await make_request();
 
-  console.log('Sim');
+  setTimeout(() => {
+    window.location.reload();
+  }, 100);
 
-  document.getElementById('make-request').disabled = true;
-
-  console.log('Não');
-
-  // window.location.reload();
 });
 
 async function fetch_url_list(urls) {
@@ -81,7 +70,6 @@ async function fetch_url_list(urls) {
           'url': url,
           'status': response.status,
           'checked_at': new Date().toISOString(),
-          'status_description': STATUS_DESCRIPTIONS[response.status] || "Unknown Status",
         });
       } catch (error) {
         api_responses.push({
@@ -89,7 +77,6 @@ async function fetch_url_list(urls) {
           'url': url,
           'status': 'Error',
           'checked_at': new Date().toISOString(),
-          'status_description': error.message,
         });
       }
     })
@@ -119,5 +106,9 @@ async function generate_log_records(api_responses) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  make_request()
+  make_request();
+
+  setTimeout(() => {
+    populate_log_table(LOG_RECORDS);
+  }, 3000);
 });

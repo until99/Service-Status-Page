@@ -1,24 +1,34 @@
 async function fetch_log_records() {
-  console.log('Fetching log records...');
 
   try {
-    const response = await fetch(localStorage.getItem('database_base_url') + `apis_history/records?filter=user_id="${localStorage.getItem('token')}"&sort=-created`, {
+    const responseRoutes = await fetch(localStorage.getItem('database_base_url') + `apis/records?filter=user_id="${localStorage.getItem('token')}"`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
-    const data = await response.json();
+    if (!responseRoutes.ok) throw new Error('Error fetching routes');
+    const userRoutes = await responseRoutes.json();
 
-    if (data.items.length > 0) {
-      return data.items;
-    } else {
-      return [];
-    }
+    const responseLogs = await fetch(localStorage.getItem('database_base_url') + `apis_history/records?filter=user_id="${localStorage.getItem('token')}"&perPage=500&sort=-created`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!responseLogs.ok) throw new Error('Error fetching log records');
+    const logData = await responseLogs.json();
+
+    const filteredLogs = logData.items.filter(log =>
+      userRoutes.items.some(route => route.url === log.url)
+    );
+
+    return filteredLogs;
 
   } catch (error) {
-    console.error('Error fetching user:', error);
+    console.error('Error:', error);
     return [];
   }
 }
@@ -26,11 +36,17 @@ async function fetch_log_records() {
 var LOG_RECORDS = [];
 
 async function populate_log_records() {
-  LOG_RECORDS = await fetch_log_records();
+  let logs = await fetch_log_records();
+
+  logs.forEach(log => {
+    log.created = new Date(log.created).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  });
+
+  LOG_RECORDS = logs;
 }
 
-localStorage.setItem('base_route', 'http://127.0.0.1:5500');
-// localStorage.setItem('base_route', 'http://until99.github.io/service-status-page');
+// localStorage.setItem('base_route', 'http://127.0.0.1:5500');
+localStorage.setItem('base_route', 'http://until99.github.io/service-status-page');
 localStorage.setItem('database_base_url', 'https://hell.pockethost.io/api/collections/');
 
 document.addEventListener('DOMContentLoaded', () => {
