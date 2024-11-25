@@ -133,7 +133,3 @@ O Usuário é o ator principal que pode visualizar o status atual dos serviços,
 **Critérios de Aceitação:**
 - Gráfico exibe corretamente o número de erros por mês.
 - Interatividade e atualização dinâmica do gráfico com base nos filtros.
-
---- 
-
-Essa estrutura deve facilitar a leitura e compreensão do seu projeto! Se precisar de mais ajustes, é só avisar.
