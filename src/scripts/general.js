@@ -45,8 +45,8 @@ async function populate_log_records() {
   LOG_RECORDS = logs;
 }
 
-// localStorage.setItem('base_route', 'http://127.0.0.1:5500');
-localStorage.setItem('base_route', 'http://until99.github.io/service-status-page');
+localStorage.setItem('base_route', 'http://127.0.0.1:5500');
+// localStorage.setItem('base_route', 'http://until99.github.io/service-status-page');
 localStorage.setItem('database_base_url', 'https://hell.pockethost.io/api/collections/');
 
 document.addEventListener('DOMContentLoaded', () => {
